@@ -9,8 +9,8 @@ PASS = os.environ.get('GOOGLE_PASS')
 
 
 def main():
-    pitchfork()
-    google_music()
+    best_new_releases = pitchfork()
+    google_music(best_new_releases)
 
 
 def pitchfork():
@@ -22,18 +22,20 @@ def pitchfork():
     return zip(artists, albums)
 
 
-def google_music():
+def google_music(pairs):
     api = gmusicapi.Mobileclient()
     api.login(USER, PASS, gmusicapi.Mobileclient.FROM_MAC_ADDRESS)
+    playlists = api.get_all_playlists()
+    playlist_id = [playlist['id'] for playlist in playlists
+        if playlist['id'] == '86be30ae-2648-4ba6-8f83-f914ccdd8434']
 
-    library = api.get_all_songs()
-    sweet_track_ids = [track['id'] for track in library
-                       if track['artist'] == 'The Cat Empire']
-
-    # results = api.search_all_access('query')
-
-    playlist_id = api.create_playlist('Rad muzak')
-    api.add_songs_to_playlist(playlist_id, sweet_track_ids)
+    for pair in pairs:
+        query = ' '.join(pair)
+        results = api.search_all_access(query)
+        track_ids = [song['track']['storeId'] for song in results['song_hits']]
+        if track_ids:
+            from pdb import set_trace; set_trace()
+            api.add_songs_to_playlist(playlist_id, track_ids)
 
 if __name__ == '__main__':
     main()
