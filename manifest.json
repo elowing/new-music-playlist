@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Google Music playlist for new releases",
+  "version": "0.1",
+
+  "default_locale": "en",
+  "description": "Adds new albums to a playlist",
+
+  "page_action": {
+    "default_icon": {
+      "19": "IMAGE",
+      "38": "IMAGE",
+    },
+      "default_title" "New Music Playlist",
+      "default_popup": "popup.html",
+    },
+  "permissions": [
+    "activeTab",
+  ],
+}
